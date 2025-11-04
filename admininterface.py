@@ -1,5 +1,6 @@
 import mysql.connector as conn
 from info import password
+import numpy as np
 
 def admin_interface(admin_id):
     mydb = conn.connect(host='localhost', user='root', passwd=password)
@@ -44,10 +45,14 @@ def admin_interface(admin_id):
                     header = f"{'RecordID':10} | {'ClientID':12} | {'VaccineID':10} | {'Date Given':12} | {'Next Due Date':12}"
                     print(header)
                     print("-" * len(header))
+                    data = []
                     for rec in records:
                         date_given = rec['DateGiven'].strftime('%Y-%m-%d') if rec['DateGiven'] else 'N/A'
                         next_due = rec['NextDueDate'].strftime('%Y-%m-%d') if rec['NextDueDate'] else 'N/A'
-                        print(f"{str(rec['RecordID']):10} | {rec['ClientID']:12} | {rec['VaccineID']:8} | {date_given:12} | {next_due:12}")
+                        data.append([str(rec['RecordID']), rec['ClientID'], rec['VaccineID'], date_given, next_due])
+                    np_data = np.array(data)
+                    for row in np_data:
+                        print(f"{row[0]:10} | {row[1]:12} | {row[2]:8} | {row[3]:12} | {row[4]:12}")
                 else:
                     print("\nNo administrated vaccination records found.")
 
@@ -142,7 +147,7 @@ def admin_interface(admin_id):
                         break
                     else:
                         print("Invalid option. Please enter 'v' to view or 'u' to update.")
-                    
+
             elif choice == '4':
                 action = input("\nDo you want to (a)dd or (r)emove a vaccine record? (a/r): ").strip().lower()
                 if action == 'a':
@@ -237,9 +242,14 @@ def admin_interface(admin_id):
                     header = f"{'DeliverableID':15} | {'ReportName':30} | {'CreatedOn':12}"
                     print(header)
                     print("-" * len(header))
+                    data = []
                     for rep in reports:
                         created_on = rep['CreatedOn'].strftime('%Y-%m-%d') if rep['CreatedOn'] else 'N/A'
-                        print(f"{rep['DeliverableID']:15} | {rep['ReportName']:30} | {created_on:12}")
+                        data.append([rep['DeliverableID'], rep['ReportName'], created_on])
+                    np_data = np.array(data)
+
+                    for row in np_data:
+                        print(f"{row[0]:15} | {row[1]:30} | {row[2]:12}")
                 else:
                     print("\nNo delivery reports found that you created.")
 
