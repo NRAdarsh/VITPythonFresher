@@ -1,6 +1,6 @@
 import mysql.connector as conn
 from info import password
-import numpy as nps
+import numpy as np
 
 def client_interface(client_id):
     mydb = conn.connect(host='localhost', user='root', passwd=password)
@@ -156,3 +156,4 @@ def client_interface(client_id):
             pass
 """
 """this was the code given by chat gpt"""
+
